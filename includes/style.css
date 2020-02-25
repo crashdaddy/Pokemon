@@ -1,0 +1,87 @@
+@font-face {
+    font-family: pokemonHollow;
+    src: url(pokemonHollow.ttf);
+}
+
+@font-face {
+    font-family: pokemonSolid;
+    src: url(pokemonSolid.ttf)
+}
+
+body {
+    background-color: #e6e6e6;
+}
+
+#banner {
+    width:50%;
+    float: left;
+    padding-left: 40px;
+}
+
+#gameBoard {
+    width:96%;
+    float: left;
+    margin-left: 40px;
+    height: 400px;
+    text-align: center;
+}
+
+#statsBoard {
+    width: 28%;
+    float: right;
+    border: 1px solid black;
+}
+
+#picturesDiv {
+    float: left;
+}
+
+#playerImgDiv, #attackerImgDiv {
+    display: inline-block;
+}
+
+#buttonsDiv {
+    width:66%;
+    float: left;
+    margin-left: 40px;
+    text-align: center;
+    clear:both;
+}
+
+.solidText {
+    font-family: pokemonSolid;
+}
+
+.hollowText {
+    font-family: pokemonHollow;
+}
+
+/* 
+Pokemon Ball button style
+*/
+
+.pokeButton{
+    font-weight: bold;
+    text-decoration: none;
+    letter-spacing: 8.82px;
+    font-size: 20px;
+    color: #0514E6;
+    font-family:  "pokemonSolid", cursive;
+    background: linear-gradient(to bottom, #FFFFFF, #FF0000);
+    border: solid #7CAFFF 1px;
+    border-radius: 5px;
+    padding:10px;
+    text-shadow: 0px 1px 2px #000000;
+    box-shadow: 0px 1px 5px #0D2444;
+    -webkit-transition: all 0.1s ease;
+    -moz-transition: all 0.1s ease;
+    -o-transition: all 0.1s ease;
+    transition: all 0.1s ease;
+}
+.pokeButton:hover{
+    font-weight: normal;
+    font-style: italic;
+    opacity: 0.9;
+    background: linear-gradient(to bottom, #FF0000, #FFFFFF);
+    box-shadow: 0px 1px 2px #000000;
+}
