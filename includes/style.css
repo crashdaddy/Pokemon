@@ -16,6 +16,9 @@ body {
     width:50%;
     float: left;
     padding-left: 40px;
+    font-family: pokemonSolid;
+    font-size: 48px;
+    color: royalblue;
 }
 
 #gameBoard {
