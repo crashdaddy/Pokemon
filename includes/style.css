@@ -30,7 +30,7 @@ body {
 }
 
 #statsBoard {
-    width: 28%;
+    width: 100%;
     float: right;
     border: 1px solid black;
 }
@@ -58,6 +58,52 @@ body {
 .hollowText {
     font-family: pokemonHollow;
 }
+
+/* sprite stuff */
+
+.spriteDown {
+	background: url('../img/pikachuSprites.png') no-repeat -16px -16px; 
+	width: 32px;
+    height: 36px;
+    animation: moveDown 0.8s steps(4) infinite;
+}
+
+.spriteLeft {
+	background: url('../img/pikachuSprites.png') no-repeat -16px -90px; 
+	width: 32px;
+    height: 36px;
+    animation: moveLeft 0.8s steps(4) infinite;
+}
+
+.spriteRight {
+	background: url('../img/pikachuSprites.png') no-repeat -16px -154px; 
+	width: 32px;
+    height: 36px;
+    animation: moveRight 0.8s steps(4) infinite;
+}
+
+.spriteUp {
+	background: url('../img/pikachuSprites.png') no-repeat -16px -220px; 
+	width: 32px;
+    height: 36px;
+    animation: moveUp 0.8s steps(4) infinite;
+}
+
+@keyframes moveDown {
+    100% { background-position:  -256px -16px; }
+ }
+
+ @keyframes moveLeft {
+    100% { background-position:  -256px -90px; }
+ }
+
+ @keyframes moveRight {
+    100% { background-position:  -256px -154px; }
+ }
+
+ @keyframes moveUp {
+    100% { background-position:  -256px -220px; }
+ }
 
 /* 
 Pokemon Ball button style

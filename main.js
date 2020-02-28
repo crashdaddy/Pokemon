@@ -10,8 +10,10 @@ let arrayOfPokemon = [32,15,99,73,45,247,700,450,699,722,55,66,77,311,405,420,69
 // the array where the enemies will be stored
 let enemies = [];
 // landscaped dimensions
-let boardHeight = 20;
+let boardHeight = 12;
 let boardWidth = 30;
+// set player start location
+let playerLoc = "1-1";
 
 /////////////////////////////
 //
@@ -113,11 +115,85 @@ const getPokemonById = (id) => {
     let htmlStr = `<img src="${enemies[pokemonID].imgURL}" style="width:50px;height:50px;" title="${titleStr}">`;
     document.getElementById(locID).innerHTML=htmlStr;
   }
+
+  const placePikachu = () => {
+    let ashDiv = document.getElementById(playerLoc);
+    ashDiv.className = "spriteDown";
+  }
   
   // Let's get it started in here!
   window.onload = function(){
     buildLandscape();
+   
     getAllEnemies();
-
+    placePikachu();
   }
+
+
+  ////////////////////////////
+  // 
+  // Functions to move the player
+  // 
+
+  const move = (direction) => {
+    
+    let pikachuCoords = playerLoc.split("-");
+    let pikachuDiv = document.getElementById(playerLoc);
+    let newClass;
+    
+    switch (direction) {
+      case "left":
+        if (parseInt(pikachuCoords[1])-1 >= 1){
+          pikachuCoords[1]--;
+          newClass = "spriteLeft"
+        }
+      break;
+      case "right":
+        if (parseInt(pikachuCoords[1])+1 <= boardWidth){
+          pikachuCoords[1]++;
+          newClass = "spriteRight"
+        }
+      break;
+      case "down":
+        if (parseInt(pikachuCoords[0])+1 <= boardHeight){
+          pikachuCoords[0]++;
+          newClass = "spriteDown"
+        }
+      break;
+      case "up":
+        if (parseInt(pikachuCoords[0])-1 >= 1){
+          pikachuCoords[0]--;
+          newClass = "spriteUp"
+        }
+      break;
+    }
+    playerLoc = pikachuCoords[0] + "-" + pikachuCoords[1];
+    let locationClass = pikachuDiv.className;
+    pikachuDiv.classList.remove(locationClass);
+    pikachuDiv = document.getElementById(playerLoc);
+    pikachuDiv.className=newClass;
+    
+  }
+
+  document.onkeydown = function(event) {
+    let pikachuDiv = document.getElementById(playerLoc);
+    switch (event.keyCode) {
+       case 37:
+        pikachuDiv.className = "spriteLeft";
+        move("left");
+          break;
+       case 38:
+        pikachuDiv.className = "spriteUp";
+        move("up");
+          break;
+       case 39:
+        pikachuDiv.className = "spriteRight";
+        move("right");
+          break;
+       case 40:
+        pikachuDiv.className = "spriteDown";
+        move("down");
+          break;
+    }
+};
 
