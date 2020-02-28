@@ -1,10 +1,9 @@
 'use strict';
 
-let arrayOfPokemon = [32,15,99,73,45,247,700,450,699,821];
+let arrayOfPokemon = [32,15,99,73,45,247,700,450,699,722,55,66,77,311,405,420,69,12,203,196];
 let pokemon = [];
 let boardHeight = 20;
 let boardWidth = 30;
-
 
 class Pokemon{
    constructor (name,hp, imgURL,x, y) {
@@ -32,8 +31,10 @@ const getPokemonById = (id) => {
                 let newPokemon = new Pokemon(data.name,data.stats[5].base_stat,data.sprites.front_default);
                 
                 pokemon.push(newPokemon);
-                    
-    placePokemon();
+                placePokemon(pokemon.indexOf(newPokemon));
+      })
+      .catch((error) => {
+        console.error('Error:', error + " id: " + id);
       });
   }
 
@@ -56,19 +57,18 @@ const getPokemonById = (id) => {
     document.getElementById('landscape').innerHTML = htmlStr;
   }
 
-  const placePokemon = () => {
-    for (let i = 0; i< pokemon.length;i++){
-      pokemon[i].x = getRandomInt(1,boardWidth);
-      pokemon[i].y = getRandomInt(1,boardHeight);
-      updateLocations(i);
-    }
+  const placePokemon = (idx) => {
+    
+      pokemon[idx].x = getRandomInt(1,boardHeight);
+      pokemon[idx].y = getRandomInt(1,boardWidth);
+      updateLocations(idx);
+    
   }
 
   const updateLocations = (pokemonID) => {
     let locID = pokemon[pokemonID].x.toString() + "-" + pokemon[pokemonID].y;
-    let htmlStr = `<img src="${pokemon[pokemonID].imgURL}" style="width:50px;height:50px;">`;
+    let htmlStr = `<img src="${pokemon[pokemonID].imgURL}" style="width:50px;height:50px;" title="${pokemon[pokemonID].name}">`;
     document.getElementById(locID).innerHTML=htmlStr;
-    console.log(locID);
   }
   
   window.onload = function(){
