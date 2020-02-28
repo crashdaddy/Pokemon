@@ -109,7 +109,8 @@ const getPokemonById = (id) => {
   // draws each enemy to its coordinate cell in the table
   const updateLocations = (pokemonID) => {
     let locID = enemies[pokemonID].x.toString() + "-" + enemies[pokemonID].y;
-    let htmlStr = `<img src="${enemies[pokemonID].imgURL}" style="width:50px;height:50px;" title="${enemies[pokemonID].name}">`;
+    let titleStr = "Pokemon: " + enemies[pokemonID].name + " -- Hit Points: " + enemies[pokemonID].hp
+    let htmlStr = `<img src="${enemies[pokemonID].imgURL}" style="width:50px;height:50px;" title="${titleStr}">`;
     document.getElementById(locID).innerHTML=htmlStr;
   }
   
