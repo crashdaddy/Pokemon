@@ -71,7 +71,7 @@ const getPokemonById = (id) => {
   }
 
   // loops through the enemies list
-  // end gets the data for each one 
+  // and gets the data for each one 
   const getAllEnemies = () => {
       for (let i = 0; i< arrayOfPokemon.length;i++){
         getPokemonById(arrayOfPokemon[i]);
@@ -114,7 +114,6 @@ const getPokemonById = (id) => {
     let titleStr = "Pokemon: " + enemies[pokemonID].name + " -- Hit Points: " + enemies[pokemonID].hp
     let htmlStr = `<img src="${enemies[pokemonID].imgURL}" style="width:30px;height:30px;display:none;" title="${titleStr}">`;
     document.getElementById(locID).innerHTML=htmlStr;
-    document.getElementById("attackerStats").innerHTML = `No enemies around`;
   }
 
   const placePikachu = () => {
