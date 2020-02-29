@@ -114,11 +114,13 @@ const getPokemonById = (id) => {
     let titleStr = "Pokemon: " + enemies[pokemonID].name + " -- Hit Points: " + enemies[pokemonID].hp
     let htmlStr = `<img src="${enemies[pokemonID].imgURL}" style="width:50px;height:50px;" title="${titleStr}">`;
     document.getElementById(locID).innerHTML=htmlStr;
+    document.getElementById("attackerStats").innerHTML = `Enemy: ${enemies[pokemonID].name} ${enemies[pokemonID].hp} hp`;
   }
 
   const placePikachu = () => {
     let ashDiv = document.getElementById(playerLoc);
     ashDiv.className = "spriteDown";
+    document.getElementById("playerStats").innerHTML = `Pikachu: 35 hp`;
   }
   
   // Let's get it started in here!
