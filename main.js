@@ -10,7 +10,7 @@ let arrayOfPokemon = [32,15,99,73,45,247,700,450,699,722,55,66,77,311,405,420,69
 // the array where the enemies will be stored
 let enemies = [];
 // landscaped dimensions
-let boardHeight = 12;
+let boardHeight = 20;
 let boardWidth = 30;
 // set player start location
 let playerLoc = "1-1";
@@ -112,9 +112,9 @@ const getPokemonById = (id) => {
   const updateLocations = (pokemonID) => {
     let locID = enemies[pokemonID].x.toString() + "-" + enemies[pokemonID].y;
     let titleStr = "Pokemon: " + enemies[pokemonID].name + " -- Hit Points: " + enemies[pokemonID].hp
-    let htmlStr = `<img src="${enemies[pokemonID].imgURL}" style="width:50px;height:50px;" title="${titleStr}">`;
+    let htmlStr = `<img src="${enemies[pokemonID].imgURL}" style="width:30px;height:30px;display:none;" title="${titleStr}">`;
     document.getElementById(locID).innerHTML=htmlStr;
-    document.getElementById("attackerStats").innerHTML = `Enemy: ${enemies[pokemonID].name} ${enemies[pokemonID].hp} hp`;
+    document.getElementById("attackerStats").innerHTML = `No enemies around`;
   }
 
   const placePikachu = () => {
@@ -126,7 +126,6 @@ const getPokemonById = (id) => {
   // Let's get it started in here!
   window.onload = function(){
     buildLandscape();
-   
     getAllEnemies();
     placePikachu();
   }
@@ -137,51 +136,104 @@ const getPokemonById = (id) => {
   // Functions to move the player
   // 
 
+  // check to see if the space the player wants to move to
+  // has an enemy in it
+  const isValidMove = (row, col) => {
+
+    for (let i=0;i<enemies.length;i++) {
+      if (enemies[i].x === row && enemies[i].y===col) {
+        // there IS an enemy here!
+        // announce its presence
+        document.getElementById("attackerStats").innerHTML = `A wild ${enemies[i].name} appears! It has ${enemies[i].hp} hp`;
+        // return that this square is occupied
+        return false
+      }
+    }
+    return true;
+  }
+
   const move = (direction) => {
-    
+    document.getElementById("attackerStats").innerHTML = `No enemies around`;
+    // break up the coordinate string into (row,col)
     let pikachuCoords = playerLoc.split("-");
+    // get our location
+    let currentRow = parseInt(pikachuCoords[0]);
+    let currentCol = parseInt(pikachuCoords[1]);
+    // and set variables for where we want to move to
+    let newRow=currentRow;
+    let newCol=currentCol;
+    // the cell where Pikachu is
     let pikachuDiv = document.getElementById(playerLoc);
     let newClass;
-    
+    // we set this so after the switch we only change
+    // the CSS class if he's actually moving
+    let moving = false;
+
     switch (direction) {
       case "left":
-        if (parseInt(pikachuCoords[1])-1 >= 1){
+        // set the coords for the cell the player wants to move to
+        // in this case it's left, so we just subtract one column
+        newCol = currentCol-1;
+        // as long as it's not off the board
+        if (newCol >= 1){
+          // adjust the coordinate
           pikachuCoords[1]--;
+          // pick which player animation to play
           newClass = "spriteLeft"
+          // if there's no enemies, authorize the move
+          if (isValidMove(newRow,newCol)) moving=true;
         }
       break;
       case "right":
-        if (parseInt(pikachuCoords[1])+1 <= boardWidth){
+        newCol=currentCol+1;
+        if (newCol <= boardWidth){
           pikachuCoords[1]++;
           newClass = "spriteRight"
+          if (isValidMove(newRow,newCol)) moving=true;
         }
       break;
       case "down":
-        if (parseInt(pikachuCoords[0])+1 <= boardHeight){
+        newRow=currentRow+1;
+        if (newRow <= boardHeight){
           pikachuCoords[0]++;
           newClass = "spriteDown"
+          if (isValidMove(newRow,newCol)) moving=true;
         }
       break;
       case "up":
-        if (parseInt(pikachuCoords[0])-1 >= 1){
+        newRow=currentRow-1
+        if (newRow >= 1){
           pikachuCoords[0]--;
-          newClass = "spriteUp"
+          newClass = "spriteUp";
+          if (isValidMove(newRow,newCol)) moving=true;
         }
       break;
     }
+    // we only want to change the CSS style if the player
+    // actually is moving to the new square
+    if (moving) {
+    // set the player's new coordinate
     playerLoc = pikachuCoords[0] + "-" + pikachuCoords[1];
+    // get the class for the current cell where the player is
     let locationClass = pikachuDiv.className;
+    // get rid of it so the player disappears from that cell
     pikachuDiv.classList.remove(locationClass);
+    // and add the class to the new cell they're moving to
     pikachuDiv = document.getElementById(playerLoc);
     pikachuDiv.className=newClass;
+    }
     
   }
 
   document.onkeydown = function(event) {
+    // get the cell for the player's current location
     let pikachuDiv = document.getElementById(playerLoc);
     switch (event.keyCode) {
+      // check if the player's pressed an arrow key
        case 37:
+        // change the animation to reflect the direction he's facing
         pikachuDiv.className = "spriteLeft";
+        // call the function to move the player
         move("left");
           break;
        case 38:
