@@ -35,7 +35,19 @@ class Pokemon{
   attackDamage() {
     return getRandomInt(1,10);
   }
+}
 
+class Berry{
+  constructor (hp,x,y,imgURL) {
+    this.hp = hp,
+    this.x = x,
+    this.y = y,
+    this.imgURL = imgURL
+  }
+
+  eat() {
+    pikachu.hp += this.hp;
+  }
 }
 
 ///////////////////////////////
@@ -43,10 +55,29 @@ class Pokemon{
 //  Declare global variables
 //
 
+// setup the array of messages we display while wandering
+let msgText = ["Looks pretty good",
+               "No enemies so far",
+               "I think we're safe",
+               "Watch for wandering Pokemon",
+               "I wonder where that Ash kid is?",
+               "This is crazy",
+               "Sure is hungries",
+               "I think we're lost",
+               "I'm not lost. Ash is lost.",
+               "Gettin' pretty lonely for some berries",
+               "It's a nice day today",
+               "This wouldn't happen if Misty was around",
+               "Pika pika." ]
+
 // the id numbers of the enemy pokemons
 let arrayOfPokemon = [32,15,99,73,45,247,700,450,699,722,55,66,77,311,405,420,69,12,203,196];
 // the array where the enemies will be stored
 let enemies = [];
+// store all the tasty berries
+let numOfBerries = 20;
+let berries = [];
+
 // landscaped dimensions
 let boardHeight = 20;
 let boardWidth = 30;
@@ -54,7 +85,7 @@ let boardWidth = 30;
 let pikachu = new Pokemon("Pikachu",35, "img/PikachuFront.png", 1, 1)
 let playerLoc = "1-1";
 // set goal in lower right corner no matter how big the board is
-let ashLoc = boardHeight.toString() + "-" + boardWidth.toString();
+let ashLoc = getRandomInt(1,boardHeight).toString() + "-" + getRandomInt(1,boardWidth.toString());
 let ashPic = "img/ashSprite.gif";
 
 // set our gameOver variable so we know if we're playing or not
@@ -71,6 +102,43 @@ function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+// generate a random message to show while wandering about
+const randomMsg = () => {
+  return msgText[getRandomInt(0,msgText.length-1)];
+}
+
+// display messages in the message div
+const displayMsg = (msg) => {
+  document.getElementById("msgDiv").innerHTML = msg;
+}
+
+//////////////////////////////////////
+//
+// Manage the scrolling background 
+// in the stats div
+//
+
+    // speed in milliseconds
+    var scrollSpeed = 70;
+	
+    // set the default position
+    var current = 0;
+  
+    // set the direction
+    var direction = 'h';
+  
+    function bgScroll(){
+  
+        // 1 pixel row at a time
+        current -= 1;
+        // move the background with backgrond-position css properties
+        document.getElementById("msgDiv").style.backgroundPosition = current+"px 0";
+     
+    }
+  
+    //Calls the scrolling function repeatedly
+     setInterval("bgScroll()", scrollSpeed);	
 
 
 
@@ -148,14 +216,21 @@ const getPokemonById = (id) => {
     pikachuDiv.className = "spriteDown";
     document.getElementById("pikaPic").innerHTML = `<img src="${pikachu.imgURL}" style="width:150px;height:150px;">`;
     document.getElementById("playerStats").innerHTML = `${pikachu.name}: ${pikachu.hp} hp`;
-    // place Ash as well
-    document.getElementById(ashLoc).style.backgroundImage = `url("${ashPic}")`;
-    document.getElementById(ashLoc).style.backgroundSize = "cover";
+  }
+
+  const placeBerries = (numOfBerries) => {
+    for (let i = 0;i <numOfBerries;i++) {
+      let berryX = getRandomInt(1,boardHeight);
+      let berryY = getRandomInt(1,boardWidth);
+      let newBerry = new Berry(getRandomInt(1,50),berryX,berryY,"img/berries.png")
+      berries.push(newBerry);
+    }
   }
   
   // Let's get it started in here!
   window.onload = function(){
     buildLandscape();
+    placeBerries(numOfBerries);
     getAllEnemies();
     placePikachu();
   }
@@ -166,51 +241,90 @@ const getPokemonById = (id) => {
   // Functions to move the player
   // 
 
+  const checkPlayerDead = () => {
+        if (pikachu.hp < 0) {
+          pikachu.hp = 0;
+          document.getElementById("playerStats").innerHTML = `${pikachu.name}: ${pikachu.hp} hp`;
+          gameOver = true;
+          return;
+        }
+  }
 
+  const fight = (enemy) => {
+        let msgText = `A wild ${enemy.name} attacks! `;
+        document.getElementById("attackerStats").innerHTML = `${enemy.name}: ${enemy.hp} hp`;
+        document.getElementById("enemyPic").innerHTML = `<img src="${enemy.imgURL}" style="width:150px;height:150px;">`;
+        // calculate attack damage 
+        let attackDamage = enemy.attackDamage();
+        pikachu.hp-= attackDamage;
+       
+        // show effects of battle
+        document.getElementById("playerStats").innerHTML = `${pikachu.name}: ${pikachu.hp} hp`;
+        msgText += `<br/>It hits you for ${attackDamage} hp!`;
+        displayMsg(msgText);
+        checkPlayerDead();
+  }
+  
 
-  // check to see if the space the player wants to move to
-  // has an enemy in it
-  const isValidMove = (row, col) => {
-    let ash = ashLoc.split("-");
-    if (row===parseInt(ash[0]) && col ===parseInt(ash[1])){
-      document.getElementById("attackerStats").innerHTML = `You found Ash! You win!`;
-      gameOver = true;
-      return false;
-    }
-
+  // check for enemies
+  const noEnemies = (row,col) => {
     for (let i=0;i<enemies.length;i++) {
       if (enemies[i].x === row && enemies[i].y===col) {
         // there IS an enemy here!
         // announce its presence
-        document.getElementById("attackerStats").innerHTML = `A wild ${enemies[i].name} attacks! It has ${enemies[i].hp} hp`;
-        document.getElementById("enemyPic").innerHTML = `<img src="${enemies[i].imgURL}" style="width:150px;height:150px;">`;
-        // calculate attack damage 
-        let attackDamage = enemies[i].attackDamage();
-        pikachu.hp-= attackDamage;
-          if (pikachu.hp < 0) {
-            pikachu.hp = 0;
-            document.getElementById("playerStats").innerHTML = `${pikachu.name}: ${pikachu.hp} hp`;
-            gameOver = true;
-            document.getElementById("attackerStats").innerHTML += `Your pikachu has died. RIP in Peace.`;
-            return false;
-          }
-        document.getElementById("playerStats").innerHTML = `${pikachu.name}: ${pikachu.hp} hp`;
-        document.getElementById("attackerStats").innerHTML += `<br/>It hits you for ${attackDamage} hp!`;
-        // return that this square is occupied
-        return false
-      }
+          fight(enemies[i]);
+        return false;
+      } 
     }
     return true;
   }
 
+  const foundAsh = (row,col) => {
+    let ash = ashLoc.split("-");
+    if (row===parseInt(ash[0]) && col ===parseInt(ash[1])){
+      displayMsg(`You found Ash! You win!`);
+      document.getElementById("enemyPic").innerHTML = `<img src="img/ashSprite.gif" style="width:150px;height:150px;">`;
+      gameOver = true;
+      return true;
+    }
+  }
+
+  // checking the place we want to move to for berries
+  const checkBerries= (row,col) => {
+    for (let i=0;i<berries.length;i++) {
+      if (berries[i].x===row & berries[i].y===col) {
+        // there IS some
+        displayMsg("You found some berries! om nom nom");
+        // show a pic
+        document.getElementById("enemyPic").innerHTML = `<img src="${berries[i].imgURL}" style="width:150px;height:150px;">`;
+        // eat dat berry!
+        berries[i].eat();
+        document.getElementById("playerStats").innerHTML = `${pikachu.name}: ${pikachu.hp} hp`;
+       
+        // remove it, cuz you ate it
+        let removedBerry = berries.splice(i,i+1);
+      }
+    }
+  }
+
+  // check to see if the space the player wants to move to
+  // has an enemy in it
+  const isValidMove = (row, col) => {
+    // check the new space for yummy berries
+    checkBerries(row,col);
+    // see if the space the player's trying to move to is where Ash is
+    if (foundAsh(row,col)) {return false;}
+    // check if there's an enemy there
+    if (noEnemies(row,col)) return true;
+  }
+
   const move = (direction) => {
-    document.getElementById("attackerStats").innerHTML = `No enemies around`;
-    document.getElementById("enemyPic").innerHTML = "";
     // break up the coordinate string into (row,col)
     let pikachuCoords = playerLoc.split("-");
     // get our location
-    let currentRow = parseInt(pikachuCoords[0]);
-    let currentCol = parseInt(pikachuCoords[1]);
+    let currentRow = parseInt(pikachu.x);
+    let currentCol = parseInt(pikachu.y);
+    
     // and set variables for where we want to move to
     let newRow=currentRow;
     let newCol=currentCol;
@@ -266,6 +380,8 @@ const getPokemonById = (id) => {
     if (moving) {
     // set the player's new coordinate
     playerLoc = pikachuCoords[0] + "-" + pikachuCoords[1];
+    pikachu.x = pikachuCoords[0];
+    pikachu.y = pikachuCoords[1];
     // get the class for the current cell where the player is
     let locationClass = pikachuDiv.className;
     // get rid of it so the player disappears from that cell
@@ -278,9 +394,15 @@ const getPokemonById = (id) => {
   }
 
   document.onkeydown = function(event) {
-    if (!gameOver) {
+    
+    if (pikachu.hp<=0) {displayMsg("Your pikachu is dead. RIP in Peace");}
+    if (!gameOver) {  
+     displayMsg(randomMsg());  
+    document.getElementById("attackerStats").innerHTML ="&nbsp;";
+    document.getElementById("enemyPic").innerHTML = "&nbsp;";
     // get the cell for the player's current location
-    let pikachuDiv = document.getElementById(playerLoc);
+    let loc = pikachu.x + "-" + pikachu.y;
+    let pikachuDiv = document.getElementById(loc);
     switch (event.keyCode) {
       // check if the player's pressed an arrow key
        case 37:
@@ -304,3 +426,6 @@ const getPokemonById = (id) => {
     }
   }
 };
+
+
+

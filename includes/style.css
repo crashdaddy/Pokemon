@@ -29,10 +29,29 @@ body {
     text-align: center;
 }
 
-#statsWrapper {
+#playerWrapper{
+    width: 24%;
+}
+
+#msgWrapper {
     width:50%;
     text-align: center;
     display: inline-block;
+    float: left;
+}
+
+#enemyWrapper {
+    width:24%;
+    float: left;
+}
+
+.msgDiv {
+    background:#3e83c8 url(../img/grass.png) repeat 0 bottom; 
+    border:2px solid #ccc;
+    background-size: cover;
+    height: 150px;
+    font-family: pokemonSolid;
+    color: blue;
 }
 
 #pikaPic {
@@ -42,11 +61,17 @@ body {
     display: inline;
 }
 
+#playerStats {
+    float: left;
+    width: 150px;
+}
+
 #enemyPic {
     width:150px;
     height: 150px;
     /* float:left;; */
     display: inline;
+    float: right;
 }
 
 #statsBoard {
@@ -57,7 +82,9 @@ body {
 }
 
 #attackerStats {
-    color: green;
+    color: red;
+    display: inline;
+    vertical-align: top;
 }
 
 #picturesDiv {
