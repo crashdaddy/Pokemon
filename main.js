@@ -119,7 +119,7 @@ const getPokemonById = (id) => {
   const placePikachu = () => {
     let ashDiv = document.getElementById(playerLoc);
     ashDiv.className = "spriteDown";
-    document.getElementById("pikaPic").innerHTML = `<img src="../img/PikachuFront.png">`;
+    document.getElementById("pikaPic").innerHTML = `<img src="../img/PikachuFront.png" style="width:150px;height:150px;">`;
     document.getElementById("playerStats").innerHTML = `Pikachu: 35 hp`;
   }
   
@@ -145,7 +145,7 @@ const getPokemonById = (id) => {
         // there IS an enemy here!
         // announce its presence
         document.getElementById("attackerStats").innerHTML = `A wild ${enemies[i].name} appears! It has ${enemies[i].hp} hp`;
-        document.getElementById("enemyPic").innerHTML = `<img src="${enemies[i].imgURL}">`;
+        document.getElementById("enemyPic").innerHTML = `<img src="${enemies[i].imgURL}" style="width:150px;height:150px;">`;
         // return that this square is occupied
         return false
       }

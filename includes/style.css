@@ -29,6 +29,26 @@ body {
     text-align: center;
 }
 
+#statsWrapper {
+    width:50%;
+    text-align: center;
+    display: inline-block;
+}
+
+#pikaPic {
+    float: left;
+    width:150px;
+    height: 150px;
+    display: inline;
+}
+
+#enemyPic {
+    width:150px;
+    height: 150px;
+    /* float:left;; */
+    display: inline;
+}
+
 #statsBoard {
     width: 100%;
     float: right;
