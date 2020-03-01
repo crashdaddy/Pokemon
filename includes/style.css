@@ -51,6 +51,7 @@ body {
 
 #statsBoard {
     width: 100%;
+    background-color: #b19cd9;
     float: right;
     border: 1px solid black;
 }

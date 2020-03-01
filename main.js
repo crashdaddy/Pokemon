@@ -1,5 +1,38 @@
 'use strict';
 
+////////////////////////////////////////////////////////////////////////////////////
+//////////                                                                //////////
+//////////                     Pokemon: Lost                              ////////// 
+//////////            Austin Coding Academy - Cohort 10 2019              //////////
+//////////                                                                //////////
+//////////             crashdaddy, hbrashid, dmcavoy631                   //////////
+//////////                                                                //////////
+////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////
+//
+// Build the class we will use to define a pokemon
+// this will be used for the enemies AND the player
+// (can be extended to add more Player specs if needed)
+
+
+class Pokemon{
+  constructor (name,hp, imgURL,x, y) {
+    this.name = name,
+    this.hp = hp,
+    this.imgURL = imgURL
+    this. x = x,
+    this.y = y,
+    this.dead = false,
+    this.visible = false
+  }
+
+  attackDamage() {
+    return getRandomInt(1,10);
+  }
+
+}
+
 ///////////////////////////////
 //
 //  Declare global variables
@@ -12,8 +45,15 @@ let enemies = [];
 // landscaped dimensions
 let boardHeight = 20;
 let boardWidth = 30;
-// set player start location
+// set player 
+let pikachu = new Pokemon("Pikachu",35, "../img/PikachuFront.png", 1, 1)
 let playerLoc = "1-1";
+// set goal in lower right corner no matter how big the board is
+let ashLoc = boardHeight.toString() + "-" + boardWidth.toString();
+let ashPic = "../img/ashSprite.gif";
+
+// set our gameOver variable so we know if we're playing or not
+let gameOver = false;
 
 /////////////////////////////
 //
@@ -27,25 +67,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-/////////////////////////////
-//
-// Build the class we will use to define a pokemon
-// this will be used for the enemies AND the player
-// (can be extended to add more Player specs if needed)
 
-
-class Pokemon{
-   constructor (name,hp, imgURL,x, y) {
-     this.name = name,
-     this.hp = hp,
-     this.imgURL = imgURL
-     this. x = x,
-     this.y = y,
-     this.dead = false,
-     this.visible = false
-   }
-
-}
 
 ///////////////////////////////////
 //
@@ -117,10 +139,13 @@ const getPokemonById = (id) => {
   }
 
   const placePikachu = () => {
-    let ashDiv = document.getElementById(playerLoc);
-    ashDiv.className = "spriteDown";
+    let pikachuDiv = document.getElementById(playerLoc);
+    pikachuDiv.className = "spriteDown";
     document.getElementById("pikaPic").innerHTML = `<img src="../img/PikachuFront.png" style="width:150px;height:150px;">`;
-    document.getElementById("playerStats").innerHTML = `Pikachu: 35 hp`;
+    document.getElementById("playerStats").innerHTML = `${pikachu.name}: ${pikachu.hp} hp`;
+    // place Ash as well
+    document.getElementById(ashLoc).style.backgroundImage = `url("${ashPic}")`;
+    document.getElementById(ashLoc).style.backgroundSize = "cover";
   }
   
   // Let's get it started in here!
@@ -136,16 +161,36 @@ const getPokemonById = (id) => {
   // Functions to move the player
   // 
 
+
+
   // check to see if the space the player wants to move to
   // has an enemy in it
   const isValidMove = (row, col) => {
+    let ash = ashLoc.split("-");
+    if (row===parseInt(ash[0]) && col ===parseInt(ash[1])){
+      document.getElementById("attackerStats").innerHTML = `You found Ash! You win!`;
+      gameOver = true;
+      return false;
+    }
 
     for (let i=0;i<enemies.length;i++) {
       if (enemies[i].x === row && enemies[i].y===col) {
         // there IS an enemy here!
         // announce its presence
-        document.getElementById("attackerStats").innerHTML = `A wild ${enemies[i].name} appears! It has ${enemies[i].hp} hp`;
+        document.getElementById("attackerStats").innerHTML = `A wild ${enemies[i].name} attacks! It has ${enemies[i].hp} hp`;
         document.getElementById("enemyPic").innerHTML = `<img src="${enemies[i].imgURL}" style="width:150px;height:150px;">`;
+        // calculate attack damage 
+        let attackDamage = enemies[i].attackDamage();
+        pikachu.hp-= attackDamage;
+          if (pikachu.hp < 0) {
+            pikachu.hp = 0;
+            document.getElementById("playerStats").innerHTML = `${pikachu.name}: ${pikachu.hp} hp`;
+            gameOver = true;
+            document.getElementById("attackerStats").innerHTML += `Your pikachu has died. RIP in Peace.`;
+            return false;
+          }
+        document.getElementById("playerStats").innerHTML = `${pikachu.name}: ${pikachu.hp} hp`;
+        document.getElementById("attackerStats").innerHTML += `<br/>It hits you for ${attackDamage} hp!`;
         // return that this square is occupied
         return false
       }
@@ -155,6 +200,7 @@ const getPokemonById = (id) => {
 
   const move = (direction) => {
     document.getElementById("attackerStats").innerHTML = `No enemies around`;
+    document.getElementById("enemyPic").innerHTML = "";
     // break up the coordinate string into (row,col)
     let pikachuCoords = playerLoc.split("-");
     // get our location
@@ -227,6 +273,7 @@ const getPokemonById = (id) => {
   }
 
   document.onkeydown = function(event) {
+    if (!gameOver) {
     // get the cell for the player's current location
     let pikachuDiv = document.getElementById(playerLoc);
     switch (event.keyCode) {
@@ -250,5 +297,6 @@ const getPokemonById = (id) => {
         move("down");
           break;
     }
+  }
 };
 
