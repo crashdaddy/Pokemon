@@ -2,10 +2,15 @@
 
 ////////////////////////////////////////////////////////////////////////////////////
 //////////                                                                //////////
-//////////                     Pokemon: Lost                              ////////// 
-//////////            Austin Coding Academy - Cohort 10 2019              //////////
+//////////                        Pokemon: Lost                           ////////// 
+//////////            Austin Coding Academy - Cohort 10 2019              ////////// 
 //////////                                                                //////////
-//////////             crashdaddy, hbrashid, dmcavoy631                   //////////
+//////////                      FIND US ON GITHUB!                        //////////
+//////////          concept, gameplay, API data mgmnt -- dmcavoy631       //////////
+//////////                                                                //////////
+//////////             enemy pokemon, stats mgmt -- hbrashid              //////////
+//////////                                                                //////////
+//////////                OOP, event mgmt -- crashdaddy                   //////////
 //////////                                                                //////////
 ////////////////////////////////////////////////////////////////////////////////////
 
@@ -46,11 +51,11 @@ let enemies = [];
 let boardHeight = 20;
 let boardWidth = 30;
 // set player 
-let pikachu = new Pokemon("Pikachu",35, "../img/PikachuFront.png", 1, 1)
+let pikachu = new Pokemon("Pikachu",35, "img/PikachuFront.png", 1, 1)
 let playerLoc = "1-1";
 // set goal in lower right corner no matter how big the board is
 let ashLoc = boardHeight.toString() + "-" + boardWidth.toString();
-let ashPic = "../img/ashSprite.gif";
+let ashPic = "img/ashSprite.gif";
 
 // set our gameOver variable so we know if we're playing or not
 let gameOver = false;
@@ -141,7 +146,7 @@ const getPokemonById = (id) => {
   const placePikachu = () => {
     let pikachuDiv = document.getElementById(playerLoc);
     pikachuDiv.className = "spriteDown";
-    document.getElementById("pikaPic").innerHTML = `<img src="../img/PikachuFront.png" style="width:150px;height:150px;">`;
+    document.getElementById("pikaPic").innerHTML = `<img src="${pikachu.imgURL}" style="width:150px;height:150px;">`;
     document.getElementById("playerStats").innerHTML = `${pikachu.name}: ${pikachu.hp} hp`;
     // place Ash as well
     document.getElementById(ashLoc).style.backgroundImage = `url("${ashPic}")`;
@@ -299,4 +304,3 @@ const getPokemonById = (id) => {
     }
   }
 };
-
