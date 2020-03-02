@@ -1,6 +1,8 @@
 # Pokemon
 Pokemon API project
 
+Live Demo: https://www.crazyhappyfuntime.com/pokemon/
+
 TODO:
    Stabilize board dimensions to eliminate cell distortion as player moves
 
