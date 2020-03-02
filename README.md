@@ -34,6 +34,8 @@ TODO:
 
             -- triggers battle
 
+                DONE
+
    Make the enemies invisible until player runs into them
 
         -- they have a "visible" property
@@ -81,6 +83,10 @@ New TODO:
 
         -- added a further distant mountain background to the viewport and scrolled
         it at a slower speed to achieve a parallax effect
+
+        -- updated background colors to gradients
+
+        -- added banner title
 
    Celebrate with champagne. It's all tophats and limousines from here on out!
    

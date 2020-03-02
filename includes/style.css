@@ -51,7 +51,7 @@ body {
     background-size: cover;
     height: 150px;
     font-family: pokemonSolid;
-    color: blue;
+    color: purple;
 }
 
 #pikaPic {
@@ -76,10 +76,8 @@ body {
 
 #statsBoard {
     width: 100%;
-    background-color: #b19cd9;
-    float: right;
-    border: 1px solid black;
-
+    background: rgb(218,135,242);
+    background: radial-gradient(circle, rgba(218,135,242,1) 4%, rgba(162,0,255,1) 47%, rgba(245,139,219,1) 85%);
     height: 150px;
 }
 
@@ -91,7 +89,6 @@ body {
 }
 
 #attackerStats {
-    color: red;
     display: inline;
     vertical-align: top;
 }
@@ -113,7 +110,8 @@ body {
 }
 
 #landscape {
-    background-color: lightgreen;
+    background: rgb(100,247,30);
+    background: linear-gradient(0deg, rgba(100,247,30,1) 4%, rgba(73,255,0,1) 24%, rgba(20,232,76,1) 85%); 
 }
 
 .solidText {
