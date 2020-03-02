@@ -142,6 +142,19 @@ function bgScroll(){
 //Calls the scrolling function repeatedly
   setInterval("bgScroll()", scrollSpeed);	
 
+// Now do it again for the mountains!
+
+var mountainSpeed = 150;
+var currentMountain = 0;
+
+var mountainDirection = 'h';
+
+function mountainScroll() {
+    currentMountain-=1;
+    document.getElementById("mountains").style.backgroundPosition = currentMountain+"px 0";
+}
+
+  setInterval("mountainScroll()",mountainSpeed);
 
 
 ///////////////////////////////////

@@ -77,6 +77,9 @@ New TODO:
         -- fixed a hack where the player could highlight the entire gameboard with the 
         mouse and see what cells had hidden pokemon in them
 
+        -- added a further distant mountain background to the viewport and scrolled
+        it at a slower speed to achieve a parallax effect
+
    Celebrate with champagne. It's all tophats and limousines from here on out!
    
 

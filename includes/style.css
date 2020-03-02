@@ -46,7 +46,7 @@ body {
 }
 
 .msgDiv {
-    background:#3e83c8 url(../img/grass.png) repeat 0 bottom; 
+    background: url(../img/grassTransparent.png) repeat 0 bottom; 
     border:2px solid #ccc;
     background-size: cover;
     height: 150px;
@@ -79,6 +79,15 @@ body {
     background-color: #b19cd9;
     float: right;
     border: 1px solid black;
+
+    height: 150px;
+}
+
+#mountains {
+    background:#3e83c8 url(../img/mountains.png) repeat 0 bottom; 
+    background-size: cover;
+    z-index: -1;
+    height:150px;
 }
 
 #attackerStats {
