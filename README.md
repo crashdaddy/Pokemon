@@ -57,11 +57,25 @@ New TODO:
 
            DONE
 
-   Add Ash at the game winning spot cell (20,30)
+   Add Ash at the game winning spot cell 
 
         -- add routine for the win
         
-           DONE
+           DONE -- randomized Ash's location and hid his sprite so he's invisible until 
+           Pikachu finds him
+
+   Extra Credit:
+
+        -- added randomly placed berries that give Pikachu extra health
+
+        -- added a scrolling background in the message viewport window
+
+        -- tightened the output divs so they wouldn't jump around when the output changed
+
+        -- refactored the move and isValid routines into smaller functions
+
+        -- fixed a hack where the player could highlight the entire gameboard with the 
+        mouse and see what cells had hidden pokemon in them
 
    Celebrate with champagne. It's all tophats and limousines from here on out!
    

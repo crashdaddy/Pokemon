@@ -37,6 +37,10 @@ class Pokemon{
   }
 }
 
+// build a class for random berries
+// they will increase Pikachu's health
+// when he eats them
+
 class Berry{
   constructor (hp,x,y,imgURL) {
     this.hp = hp,
@@ -78,13 +82,13 @@ let enemies = [];
 let numOfBerries = 20;
 let berries = [];
 
-// landscaped dimensions
+// landscape dimensions
 let boardHeight = 20;
 let boardWidth = 30;
 // set player 
 let pikachu = new Pokemon("Pikachu",35, "img/PikachuFront.png", 1, 1)
 let playerLoc = "1-1";
-// set goal in lower right corner no matter how big the board is
+// set goal in random spot no matter how big the board is
 let ashLoc = getRandomInt(1,boardHeight).toString() + "-" + getRandomInt(1,boardWidth.toString());
 let ashPic = "img/ashSprite.gif";
 
@@ -108,7 +112,7 @@ const randomMsg = () => {
   return msgText[getRandomInt(0,msgText.length-1)];
 }
 
-// display messages in the message div
+// display messages in the message viewport div
 const displayMsg = (msg) => {
   document.getElementById("msgDiv").innerHTML = msg;
 }
@@ -116,29 +120,27 @@ const displayMsg = (msg) => {
 //////////////////////////////////////
 //
 // Manage the scrolling background 
-// in the stats div
+// in the message viewport div
 //
 
-    // speed in milliseconds
-    var scrollSpeed = 70;
-	
-    // set the default position
-    var current = 0;
-  
-    // set the direction
-    var direction = 'h';
-  
-    function bgScroll(){
-  
-        // 1 pixel row at a time
-        current -= 1;
-        // move the background with backgrond-position css properties
-        document.getElementById("msgDiv").style.backgroundPosition = current+"px 0";
-     
-    }
-  
-    //Calls the scrolling function repeatedly
-     setInterval("bgScroll()", scrollSpeed);	
+// speed in milliseconds
+var scrollSpeed = 70;
+
+// set the default position
+var current = 0;
+
+// set the direction
+var direction = 'h';
+
+function bgScroll(){
+    // 1 pixel row at a time (left)
+    current -= 1;
+    // move the background with backgrond-position css properties
+    document.getElementById("msgDiv").style.backgroundPosition = current+"px 0";
+}
+
+//Calls the scrolling function repeatedly
+  setInterval("bgScroll()", scrollSpeed);	
 
 
 
@@ -200,15 +202,6 @@ const getPokemonById = (id) => {
   const placeEnemies = (idx) => {
       enemies[idx].x = getRandomInt(1,boardHeight);
       enemies[idx].y = getRandomInt(1,boardWidth);
-      updateLocations(idx);
-  }
-
-  // draws each enemy to its coordinate cell in the table
-  const updateLocations = (pokemonID) => {
-    let locID = enemies[pokemonID].x.toString() + "-" + enemies[pokemonID].y;
-    let titleStr = "Pokemon: " + enemies[pokemonID].name + " -- Hit Points: " + enemies[pokemonID].hp
-    let htmlStr = `<img src="${enemies[pokemonID].imgURL}" style="width:30px;height:30px;display:none;" title="${titleStr}">`;
-    document.getElementById(locID).innerHTML=htmlStr;
   }
 
   const placePikachu = () => {
